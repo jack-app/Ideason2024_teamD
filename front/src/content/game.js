@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './../stylesheet/style.css'; // 必要に応じてCSSを適用するためにインポート
-import { useRef, useLayoutEffect } from 'react';
+import { useRef, useLayoutEffect, useState, useEffect } from 'react';
 
 let inited = 0;
 
@@ -26,6 +26,7 @@ let grid = [
 ];
 
 function MyLink({ to, onClick, children }) {
+
     const handleClick = (event) => {
         inited = 0;
         if (onClick) {
@@ -40,7 +41,68 @@ function MyLink({ to, onClick, children }) {
     );
 }
 
+
 function App() {
+    const [gameLog, setGameLog] = useState("ここにログが表示されますのじゃ🦊");
+
+    // ==========================================
+    // !!!!!!!ゲーム外やり取り関係関数予定地!!!!!!!!
+    // ==========================================
+
+    // ログの表示
+    function addGameLog(message) {
+        setGameLog(prevLog => prevLog + '\n' + message);
+    }
+
+    // 音を鳴らす
+    function sound(id) {
+        const Txts = {
+            11: 'Am',
+            12: 'C',
+            13: 'Em',
+            14: 'F',
+            15: 'G',
+        };
+        addGameLog("[" + Txts[id] + "の音を鳴らす" + "]");
+    }
+
+    // 得点加算
+    function score(id, combo) {
+        const Txts = {
+            11: 'Am',
+            12: 'C',
+            13: 'Em',
+            14: 'F',
+            15: 'G',
+        };
+        addGameLog(Txts[id] + "を消しました；" + combo + "コンボ．");
+    }
+
+    function gameover() {
+        addGameLog("がめおべら");
+        addGameLog("スペースキーでリスタートなのじゃ🦊");
+        const waitForSpace = () => {
+            return new Promise(resolve => {
+                const handleKeyDown = (event) => {
+                    if (event.code === 'Space') {
+                        window.removeEventListener('keydown', handleKeyDown);
+                        resolve();
+                    }
+                };
+                window.addEventListener('keydown', handleKeyDown);
+            });
+        };
+
+        waitForSpace().then(() => {
+            console.log('Space key was pressed');
+            window.location.reload();
+        });
+    }
+
+    // ==========================================
+    // !!!!ゲーム外やり取り関係関数予定地おわり!!!!!
+    // ==========================================
+
     const imgRef = useRef({});
     imgRef.current = {};
     useLayoutEffect(() => {
@@ -70,6 +132,7 @@ function App() {
         let playing2 = 11; // 操作中のブロック2の色
         const rows = 16;
         const columns = 16;
+        let combo = 0;
 
 
         // ====関数定義====
@@ -151,6 +214,7 @@ function App() {
                 updateCellColor(playY, playX, playing);
                 updateCellColor(play2Y, play2X, playing2);
                 if (state === "check") {
+                    combo = 0;
                     check();
                 } else {
                     playBlock();
@@ -206,6 +270,7 @@ function App() {
 
 
                 if (state === "check") {
+                    combo = 0;
                     check();
                 }
             }
@@ -224,6 +289,10 @@ function App() {
 
 
         async function check() {
+            if (grid[1][8] !== 0) {
+                gameover();
+                return;
+            }
             var flag = 0;
 
             // 落下確認
@@ -245,21 +314,21 @@ function App() {
                         // 2つ繋がった確認
                         if (grid[i][j] !== 0 && grid[i][j] !== 1 && grid[i][j] !== 100 && grid[i][j] === grid[i][j + 1]) {
                             var tmp = grid[i][j];
-                            await wait(300);
+                            for (let k = 0; k < 5; k++) {
+                                await wait(50);
+                                updateCellColor(i, j, 0);
+                                updateCellColor(i, j + 1, 0);
+                                await wait(50);
+                                updateCellColor(i, j, tmp);
+                                updateCellColor(i, j + 1, tmp);
+                            }
                             updateCellColor(i, j, 0);
                             updateCellColor(i, j + 1, 0);
-                            await wait(300);
-                            updateCellColor(i, j, tmp);
-                            updateCellColor(i, j + 1, tmp);
-                            await wait(300);
-                            updateCellColor(i, j, 0);
-                            updateCellColor(i, j + 1, 0);
-                            await wait(300);
-                            updateCellColor(i, j, tmp);
-                            updateCellColor(i, j + 1, tmp);
-                            await wait(300);
-                            updateCellColor(i, j, 0);
-                            updateCellColor(i, j + 1, 0);
+
+                            combo++;
+                            sound(tmp);
+                            score(tmp, combo);
+
                             check();
                             return;
                         }
@@ -291,28 +360,34 @@ function App() {
     }, []);
     return (
         <div className="App">
-            <h1>Game</h1>
-            <nav>
-                <MyLink to="/">Home</MyLink>
-            </nav>
-            <table className="grid">
-                <tbody>
-                    {grid.map((row, i) => (
-                        <tr key={i} className="row">
-                            {row.map((cell, j) => (
-                                <td key={j} className="cell">
-                                    {/* key属性を使って再描画をトリガー */}
-                                    <img ref={el => imgRef.current[`${i}-${j}`] = el} key={`${i}-${j}`}
-                                        src='/texture/ice.png'
-                                        alt={``}
-                                        className="pixelated"
-                                    />
-                                </td>
-                            ))}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <div className="container">
+                <table className="grid">
+                    <tbody>
+                        {grid.map((row, i) => (
+                            <tr key={i} className="row">
+                                {row.map((cell, j) => (
+                                    <td key={j} className="cell">
+                                        {/* key属性を使って再描画をトリガー */}
+                                        <img ref={el => imgRef.current[`${i}-${j}`] = el} key={`${i}-${j}`}
+                                            src='/texture/ice.png'
+                                            alt={``}
+                                            className="pixelated"
+                                        />
+                                    </td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                <div>
+                    <h1>Game</h1>
+                    <nav>
+                        <MyLink to="/">Home</MyLink>
+                    </nav>
+                    <h2>ログ</h2>
+                    <textarea style={{ whiteSpace: 'pre-line' }} value={gameLog} readOnly rows="30" cols="100"></textarea>
+                </div>
+            </div>
         </div>
     );
 }

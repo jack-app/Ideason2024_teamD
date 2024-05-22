@@ -1,3 +1,7 @@
+.container {
+  display: flex;
+}
+
 .grid {
   background-image: url('/public/texture/bg2.png');
   width: 40%;
