@@ -1,28 +1,30 @@
 .grid {
-    background-image: url('/public/texture/bg2.png');
-    width: 40%;
-    border-collapse: collapse;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    image-rendering: pixelated;
+  background-image: url('/public/texture/bg2.png');
+  width: 40%;
+  border-collapse: collapse;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  image-rendering: pixelated;
 }
-  
-  .row {
-    line-height:0;
-  }
-  
-  .cell {
-    padding: 0px;
-  }
-  
-  .cell img {
-    width: 100%; /* 画像をセルにフィットさせる */
-    max-width: 100%; /* 画像の最大幅を100%に設定 */
-    height: auto; /* アスペクト比を維持して画像をリサイズ */
-  }
-  
-  .pixelated {
-    image-rendering: pixelated;
-   
-  }
-  
+
+.row {
+  line-height: 0;
+}
+
+.cell {
+  padding: 0px;
+}
+
+.cell img {
+  width: 100%;
+  /* 画像をセルにフィットさせる */
+  max-width: 100%;
+  /* 画像の最大幅を100%に設定 */
+  height: auto;
+  /* アスペクト比を維持して画像をリサイズ */
+}
+
+.pixelated {
+  image-rendering: pixelated;
+
+}

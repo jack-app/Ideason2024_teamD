@@ -25,10 +25,22 @@ let grid = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
+function MyLink({ to, onClick, children }) {
+    const handleClick = (event) => {
+        inited = 0;
+        if (onClick) {
+            onClick(event);
+        }
+    };
 
+    return (
+        <Link to={to} onClick={handleClick}>
+            {children}
+        </Link>
+    );
+}
 
 function App() {
-
     const imgRef = useRef({});
     imgRef.current = {};
     useLayoutEffect(() => {
@@ -68,7 +80,13 @@ function App() {
 
         // n ms待つ
         function wait(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
+            return new Promise(resolve => {
+                if (inited === 0) {
+                    window.location.reload();
+                } else {
+                    setTimeout(resolve, ms)
+                }
+            });
         }
 
 
@@ -275,7 +293,7 @@ function App() {
         <div className="App">
             <h1>Game</h1>
             <nav>
-                <Link to="/">Home</Link>
+                <MyLink to="/">Home</MyLink>
             </nav>
             <table className="grid">
                 <tbody>
