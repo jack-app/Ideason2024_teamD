@@ -314,6 +314,11 @@ function App() {
                         // 2つ繋がった確認
                         if (grid[i][j] !== 0 && grid[i][j] !== 1 && grid[i][j] !== 100 && grid[i][j] === grid[i][j + 1]) {
                             var tmp = grid[i][j];
+
+                            combo++;
+                            sound(tmp);
+                            score(tmp, combo);
+
                             for (let k = 0; k < 5; k++) {
                                 await wait(50);
                                 updateCellColor(i, j, 0);
@@ -324,10 +329,6 @@ function App() {
                             }
                             updateCellColor(i, j, 0);
                             updateCellColor(i, j + 1, 0);
-
-                            combo++;
-                            sound(tmp);
-                            score(tmp, combo);
 
                             check();
                             return;
