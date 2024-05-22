@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './../stylesheet/style.css'; // 必要に応じてCSSを適用するためにインポート
 import { useRef, useLayoutEffect } from 'react';
 
@@ -248,50 +249,54 @@ function App() {
                 }
                 resetPenguin();
             }
-    }
+        }
 
         // ====ゲーム開始====
 
         let state = "start";
-    if (inited == 0) {
-        inited = 1;
-        init();
-    }
-    function init() {
-        for (let i = 0; i < rows; i++) {
-            for (let j = 0; j < columns; j++) {
-                const key = `${i}-${j}`;
-                if (imgRef.current[key]) {
-                    imgRef.current[key].src = textures[grid[i][j]];
+        if (inited === 0) {
+            inited = 1;
+            init();
+        }
+        function init() {
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < columns; j++) {
+                    const key = `${i}-${j}`;
+                    if (imgRef.current[key]) {
+                        imgRef.current[key].src = textures[grid[i][j]];
+                    }
                 }
             }
+            resetPenguin();
         }
-        resetPenguin();
-    }
 
-}, []);
-return (
-    <div className="App">
-        <table className="grid">
-            <tbody>
-                {grid.map((row, i) => (
-                    <tr key={i} className="row">
-                        {row.map((cell, j) => (
-                            <td key={j} className="cell">
-                                {/* key属性を使って再描画をトリガー */}
-                                <img ref={el => imgRef.current[`${i}-${j}`] = el} key={`${i}-${j}`}
-                                    src='/texture/ice.png'
-                                    alt={``}
-                                    className="pixelated"
-                                />
-                            </td>
-                        ))}
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-    </div>
-);
+    }, []);
+    return (
+        <div className="App">
+            <h1>Game</h1>
+            <nav>
+                <Link to="/">Home</Link>
+            </nav>
+            <table className="grid">
+                <tbody>
+                    {grid.map((row, i) => (
+                        <tr key={i} className="row">
+                            {row.map((cell, j) => (
+                                <td key={j} className="cell">
+                                    {/* key属性を使って再描画をトリガー */}
+                                    <img ref={el => imgRef.current[`${i}-${j}`] = el} key={`${i}-${j}`}
+                                        src='/texture/ice.png'
+                                        alt={``}
+                                        className="pixelated"
+                                    />
+                                </td>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
 }
 
 export default App;
