@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import {Profile} from'./components/sound.jsx';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
+          <Profile/>
           Learn React
         </a>
       </header>
