@@ -317,17 +317,18 @@ function App() {
                                 ppapFunc();
                                 await wait(8000);
                             }
+                            let tmp2 = tmp;
                             if (pen === 1) {
                                 if (guin === 1) {
-                                    tmp += 30;
+                                    tmp2 += 30;
                                 } else {
-                                    tmp += 10;
+                                    tmp2 += 10;
                                 }
                             } else if (guin === 1) {
-                                tmp += 20;
+                                tmp2 += 20;
                             }
-                            sound(tmp);
-                            score(tmp, combo);
+                            sound(tmp2);
+                            score(tmp2, combo);
 
 
                             for (let k = 0; k < 5; k++) {
