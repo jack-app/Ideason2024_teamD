@@ -6,14 +6,12 @@ import '../stylesheet/header.css'; // スタイルシートをインポート
 const Header = () => {
   return (
     <header className="header">
-      <div className="logo">
-        <Link to="/">MyLogo</Link>
-      </div>
+      
       <nav>
         <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/about">About</Link></li>
-          <li><Link to="/contact">Contact</Link></li>
+          <li><Link to="/">ゲーム説明</Link></li>
+          <li><Link to="/about">ホーム画面に戻る</Link></li>
+          
         </ul>
       </nav>
     </header>
