@@ -56,26 +56,12 @@ function App() {
 
     // 音を鳴らす
     function sound(id) {
-        const Txts = {
-            11: 'Am',
-            12: 'C',
-            13: 'Em',
-            14: 'F',
-            15: 'G',
-        };
-        addGameLog("[" + Txts[id] + "の音を鳴らす" + "]");
+        addGameLog("[" + id + "の音を鳴らす]");
     }
 
     // 得点加算
     function score(id, combo) {
-        const Txts = {
-            11: 'Am',
-            12: 'C',
-            13: 'Em',
-            14: 'F',
-            15: 'G',
-        };
-        addGameLog(Txts[id] + "を消しました；" + combo + "コンボ．");
+        addGameLog(id + "を消しました；" + combo + "コンボ．");
     }
 
     function gameover() {
@@ -116,6 +102,9 @@ function App() {
             13: '/texture/iceEm.png',
             14: '/texture/iceF.png',
             15: '/texture/iceG.png',
+            16: '/texture/pen.png',
+            17: '/texture/guin.png',
+            18: '/texture/ppap.png',
 
         };
 
@@ -134,6 +123,8 @@ function App() {
         const columns = 16;
         let combo = 0;
 
+        let pen = 0;
+        let guin = 0;
 
         // ====関数定義====
 
@@ -154,8 +145,8 @@ function App() {
 
 
         async function resetPenguin() {
-            playing = getRandomIntInRange(11, 15);
-            playing2 = getRandomIntInRange(11, 15);
+            playing = getRandomIntInRange(11, 18);
+            playing2 = getRandomIntInRange(11, 18);
 
             state = "penguinMoving";
             let penguin = 10;
@@ -316,14 +307,34 @@ function App() {
                             var tmp = grid[i][j];
 
                             combo++;
+                            if (tmp === 16) {
+                                if (pen === 0) pen = 1; else pen = 0;
+                            }
+                            if (tmp === 17) {
+                                if (guin === 0) guin = 1; else guin = 0;
+                            }
+                            if (tmp === 18) {
+                                ppapFunc();
+                                await wait(8000);
+                            }
+                            if (pen === 1) {
+                                if (guin === 1) {
+                                    tmp += 30;
+                                } else {
+                                    tmp += 10;
+                                }
+                            } else if (guin === 1) {
+                                tmp += 20;
+                            }
                             sound(tmp);
                             score(tmp, combo);
 
+
                             for (let k = 0; k < 5; k++) {
-                                await wait(50);
+                                await wait(100);
                                 updateCellColor(i, j, 0);
                                 updateCellColor(i, j + 1, 0);
-                                await wait(50);
+                                await wait(100);
                                 updateCellColor(i, j, tmp);
                                 updateCellColor(i, j + 1, tmp);
                             }
@@ -339,6 +350,32 @@ function App() {
             }
         }
 
+        async function ppapFunc() {
+            updateCellColor(14, 1, 0);
+            sound(51);
+            await wait(1000);
+            updateCellColor(14, 2, 0);
+            sound(52);
+            await wait(1000);
+            updateCellColor(14, 3, 0);
+            sound(53);
+            await wait(1000);
+            updateCellColor(14, 4, 0);
+            sound(54);
+            await wait(1000);
+            updateCellColor(14, 5, 0);
+            sound(55);
+            await wait(1000);
+            updateCellColor(14, 6, 0);
+            sound(51);
+            await wait(1000);
+            updateCellColor(14, 7, 0);
+            sound(55);
+            await wait(1000);
+            updateCellColor(14, 8, 0);
+            sound(52);
+            await wait(1000);
+        }
         // ====ゲーム開始====
 
         let state = "start";
