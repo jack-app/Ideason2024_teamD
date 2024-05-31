@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import  Header from '../components/header.jsx';
+import Header from '../components/header.jsx';
 import Button from '../components/button.jsx';
 
 function Home() {
@@ -8,10 +8,12 @@ function Home() {
     <div>
       <Header />
       <nav>
-          <Button text="game" to="/game" styleType="default" />
+        <Button text="game" to="/game" styleType="default" />
+        <Link to="/st">Soundtest</Link>
       </nav>
     </div>
   );
 }
 
 export default Home;
+
