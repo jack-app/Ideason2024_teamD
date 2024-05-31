@@ -1,26 +1,20 @@
 import logo from './logo.svg';
 import './App.css';
-import {Profile} from'./components/sound.jsx';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Game from "./content/game";
+import Home from "./content/home";
+import Soundtest from "./content/soundtest";
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Profile/>
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+    <Routes>
+      <Route path="/Game" element={<Game />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/st" element={<Soundtest />} />
+    </Routes>
+  </BrowserRouter>
   );
 }
 
