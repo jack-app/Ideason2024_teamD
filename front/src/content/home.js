@@ -7,9 +7,11 @@ function Home() {
       <h1>Home</h1>
       <nav>
           <Link to="/game">Game</Link>
+          <Link to="/st">Soundtest</Link>
       </nav>
     </div>
   );
 }
 
 export default Home;
+
