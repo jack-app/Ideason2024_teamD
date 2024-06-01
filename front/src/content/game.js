@@ -61,6 +61,8 @@ function App() {
     // 音を鳴らす
     function sound(id) {
         addGameLog("[" + id + "の音を鳴らす]");
+        const audio = new Audio(process.env.PUBLIC_URL + '/sound/'+id+'.wav');
+        audio.play();
     }
 
     // 得点加算
@@ -319,9 +321,11 @@ function App() {
 
                             combo++;
                             if (tmp === 16) {
+                                sound(100);
                                 if (pen === 0) pen = 1; else pen = 0;
                             }
                             if (tmp === 17) {
+                                sound(100);
                                 if (guin === 0) guin = 1; else guin = 0;
                             }
                             let tmp2 = tmp;
@@ -339,6 +343,7 @@ function App() {
                             if (tmp === 18) {
                                 ppapFunc();
                                 await wait(8000);
+                                sound(100);
                             } else {
                                 if (tmp !== 16 && tmp !== 17) {
                                     sound(tmp2);
