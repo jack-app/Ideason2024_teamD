@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/header.jsx';
 import Button from '../components/button.jsx';
-import '../stlyesheet/rules.css';
+import './../stylesheet/rules.css';
 
 function Home() {
   return (
