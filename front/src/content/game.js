@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './../stylesheet/style.css'; // 必要に応じてCSSを適用するためにインポート
 import { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import Header from '../components/header.jsx';
@@ -44,9 +44,10 @@ function MyLink({ to, onClick, children }) {
 
 
 function App() {
-    
+
     const navigate = useNavigate();
     const [gameLog, setGameLog] = useState("ここにログが表示されますのじゃ🦊");
+    var soundList = [];
 
     // ==========================================
     // !!!!!!!ゲーム外やり取り関係関数予定地!!!!!!!!
@@ -63,16 +64,14 @@ function App() {
         const audio = new Audio();
         audio.src = process.env.PUBLIC_URL + '/sound/' + id + '.wav';
         audio.play();
-
     }
 
     // 得点加算
     const [scoreVal, setScore] = useState(0);
 
-    const incrementScore = (x) => setScore(scoreVal + x);
     function score(id, combo) {
         addGameLog(id + "を消しました；" + combo + "コンボ．");
-        incrementScore(2 ** (combo - 1));
+        setScore(prevLog => prevLog + (2 ** (combo - 1)));
     }
 
     function gameover() {
@@ -93,8 +92,8 @@ function App() {
         waitForSpace().then(() => {
 
             const path = '/result';
-            const data = scoreVal;
-            
+            const data = {scoreVal, soundList};
+
             // パスとデータを共有して画面遷移
             navigate(path, { state: data });
         });
@@ -323,14 +322,12 @@ function App() {
 
                             combo++;
                             if (tmp === 16) {
+                                sound(100);
                                 if (pen === 0) pen = 1; else pen = 0;
                             }
                             if (tmp === 17) {
+                                sound(100);
                                 if (guin === 0) guin = 1; else guin = 0;
-                            }
-                            if (tmp === 18) {
-                                ppapFunc();
-                                await wait(8000);
                             }
                             let tmp2 = tmp;
                             if (pen === 1) {
@@ -341,8 +338,19 @@ function App() {
                                 }
                             } else if (guin === 1) {
                                 tmp2 += 20;
+
                             }
-                            sound(tmp2);
+
+                            if (tmp === 18) {
+                                ppapFunc();
+                                await wait(8000);
+                                sound(100);
+                            } else {
+                                if (tmp !== 16 && tmp !== 17) {
+                                    sound(tmp2);
+                                    soundList.push(tmp2);
+                                }
+                            }
                             score(tmp2, combo);
 
 
@@ -369,27 +377,35 @@ function App() {
         async function ppapFunc() {
             updateCellColor(14, 1, 0);
             sound(51);
+            soundList.push(51);
             await wait(1000);
             updateCellColor(14, 2, 0);
             sound(52);
+            soundList.push(52);
             await wait(1000);
             updateCellColor(14, 3, 0);
             sound(53);
+            soundList.push(53);
             await wait(1000);
             updateCellColor(14, 4, 0);
             sound(54);
+            soundList.push(54);
             await wait(1000);
             updateCellColor(14, 5, 0);
             sound(55);
+            soundList.push(55);
             await wait(1000);
             updateCellColor(14, 6, 0);
             sound(51);
+            soundList.push(51);
             await wait(1000);
             updateCellColor(14, 7, 0);
             sound(55);
+            soundList.push(55);
             await wait(1000);
             updateCellColor(14, 8, 0);
             sound(52);
+            soundList.push(52);
             await wait(1000);
         }
         // ====ゲーム開始====
