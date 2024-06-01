@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Game from "./content/game";
 import Home from "./content/home";
 import Soundtest from "./content/soundtest";
-
+import Result from "./content/result";
 
 function App() {
   return (
@@ -13,6 +13,7 @@ function App() {
       <Route path="/Game" element={<Game />} />
       <Route path="/" element={<Home />} />
       <Route path="/st" element={<Soundtest />} />
+      <Route path="/result" element={<Result />} />
     </Routes>
   </BrowserRouter>
   );

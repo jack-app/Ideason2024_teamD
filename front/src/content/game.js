@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import './../stylesheet/style.css'; // 必要に応じてCSSを適用するためにインポート
 import { useRef, useLayoutEffect, useState, useEffect } from 'react';
+import Header from '../components/header.jsx';
 
 let inited = 0;
 
@@ -43,6 +44,8 @@ function MyLink({ to, onClick, children }) {
 
 
 function App() {
+    
+    const navigate = useNavigate();
     const [gameLog, setGameLog] = useState("ここにログが表示されますのじゃ🦊");
 
     // ==========================================
@@ -60,13 +63,17 @@ function App() {
     }
 
     // 得点加算
+    const [scoreVal, setScore] = useState(0);
+
+    const incrementScore = (x) => setScore(scoreVal + x);
     function score(id, combo) {
         addGameLog(id + "を消しました；" + combo + "コンボ．");
+        incrementScore(2 ** (combo - 1));
     }
 
     function gameover() {
         addGameLog("がめおべら");
-        addGameLog("スペースキーでリスタートなのじゃ🦊");
+        addGameLog("スペースキーでresultへ");
         const waitForSpace = () => {
             return new Promise(resolve => {
                 const handleKeyDown = (event) => {
@@ -80,8 +87,12 @@ function App() {
         };
 
         waitForSpace().then(() => {
-            console.log('Space key was pressed');
-            window.location.reload();
+
+            const path = '/result';
+            const data = scoreVal;
+            
+            // パスとデータを共有して画面遷移
+            navigate(path, { state: data });
         });
     }
 
@@ -399,6 +410,7 @@ function App() {
     }, []);
     return (
         <div className="App">
+            <Header />
             <div className="container">
                 <table className="grid">
                     <tbody>
@@ -423,6 +435,8 @@ function App() {
                     <nav>
                         <MyLink to="/">Home</MyLink>
                     </nav>
+                    <h2>Score: {scoreVal}</h2>
+
                     <h2>ログ</h2>
                     <textarea style={{ whiteSpace: 'pre-line' }} value={gameLog} readOnly rows="30" cols="100"></textarea>
                 </div>
