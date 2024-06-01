@@ -8,8 +8,9 @@ function Home() {
     <div>
       <Header />
       <nav>
-        <Button text="game" to="/game" styleType="default" />
-        <Link to="/st">Soundtest</Link>
+      <Button text="Game" to="/game" styleType="default" />
+      <Button text="SoundTest" to="/st" styleType="default" />
+      <Button text="Rules" to="/rules" styleType="default" />
       </nav>
     </div>
   );

@@ -152,7 +152,7 @@ function App() {
                 if (inited === 0) {
                     window.location.reload();
                 } else {
-                    setTimeout(resolve, ms)
+                    setTimeout(resolve, ms-10)
                 }
             });
         }
