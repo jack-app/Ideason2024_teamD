@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/header.jsx';
 import Button from '../components/button.jsx';
+import '../stlyesheet/rules.css';
 
 function Home() {
   return (
@@ -11,7 +12,9 @@ function Home() {
         <Button text="game" to="/game" styleType="default" />
         <Link to="/st">Soundtest</Link>
       </nav>
-      <h1>ルール説明</h1>
+      <div className='box'>
+       <h1 className='text'>ルール説明</h1>
+      </div>
       <h2>ゲームの遊び方</h2>
       <p>横に2個同じブロックを並べて音を消そう！十字キーの方向に動くけど上には動かせないよ。</p>
       <p>ブロックが消えると音が鳴るよ！</p>
