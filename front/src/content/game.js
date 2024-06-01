@@ -60,6 +60,9 @@ function App() {
     // 音を鳴らす
     function sound(id) {
         addGameLog("[" + id + "の音を鳴らす]");
+        const audio = new Audio('');
+        audio.play();
+
     }
 
     // 得点加算
