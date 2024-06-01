@@ -162,10 +162,35 @@ function App() {
             });
         }
 
+function getRandomBlock(){
+    const blocks=[
+        11,
+        12,
+        13,
+        14,
+        15,
+        11,
+        15,
+        12,
 
+        11,
+        12,
+        13,
+        14,
+        15,
+        11,
+        15,
+        12,
+
+        16,
+        17,
+        18
+    ]
+    return blocks[getRandomIntInRange(0,18)]
+}
         async function resetPenguin() {
-            playing = getRandomIntInRange(11, 18);
-            playing2 = getRandomIntInRange(11, 18);
+            playing = getRandomBlock();
+            playing2 = getRandomBlock();
 
             state = "penguinMoving";
             let penguin = 10;
