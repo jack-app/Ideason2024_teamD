@@ -162,32 +162,32 @@ function App() {
             });
         }
 
-function getRandomBlock(){
-    const blocks=[
-        11,
-        12,
-        13,
-        14,
-        15,
-        11,
-        15,
-        12,
+        function getRandomBlock() {
+            const blocks = [
+                11,
+                12,
+                13,
+                14,
+                15,
+                11,
+                15,
+                12,
 
-        11,
-        12,
-        13,
-        14,
-        15,
-        11,
-        15,
-        12,
+                11,
+                12,
+                13,
+                14,
+                15,
+                11,
+                15,
+                12,
 
-        16,
-        17,
-        18
-    ]
-    return blocks[getRandomIntInRange(0,18)]
-}
+                16,
+                17,
+                18
+            ]
+            return blocks[getRandomIntInRange(0, 18)]
+        }
         async function resetPenguin() {
             playing = getRandomBlock();
             playing2 = getRandomBlock();
@@ -457,10 +457,13 @@ function getRandomBlock(){
             row++;
             if (Math.floor(x / 10) === 2 || Math.floor(x / 10) === 4 || Math.floor(x / 10) === 5) {
                 grid2[row][column] = 16;
-                key = `2-${row}-${column}`;
-                if (imgRef.current[key]) {
-                    imgRef.current[key].src = textures[grid2[row][column]];
-                }
+            } else {
+                grid2[row][column] = 0;
+            }
+            key = `2-${row}-${column}`;
+            if (imgRef.current[key]) {
+                imgRef.current[key].src = textures[grid2[row][column]];
+
             }
             row++;
             if (Math.floor(x / 10) === 3 || Math.floor(x / 10) === 4 || Math.floor(x / 10) === 5) {
