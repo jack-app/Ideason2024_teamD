@@ -66,10 +66,9 @@ function App() {
     // 得点加算
     const [scoreVal, setScore] = useState(0);
 
-    const incrementScore = (x) => setScore(scoreVal + x);
     function score(id, combo) {
         addGameLog(id + "を消しました；" + combo + "コンボ．");
-        incrementScore(2 ** (combo - 1));
+        setScore(prevLog => prevLog + (2 ** (combo - 1)));
     }
 
     function gameover() {
