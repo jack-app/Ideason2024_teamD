@@ -79,7 +79,7 @@ function App() {
     }
 
     function gameover() {
-        
+
         inited = 100;
         const waitForSpace = () => {
             return new Promise(resolve => {
@@ -300,7 +300,7 @@ function App() {
 
         async function check() {
             if (grid[1][8] !== 0) {
-                imgRef.current['center'].src="/texture/gameover.png";
+                imgRef.current['center'].src = "/texture/gameover.png";
                 gameover();
                 return;
             }
@@ -381,7 +381,7 @@ function App() {
         }
 
         async function ppapFunc() {
-            imgRef.current['center'].src="/texture/ppap2.png";
+            imgRef.current['center'].src = "/texture/ppap2.png";
             updateCellColor(14, 1, 0);
             sound(51);
             soundListAdd(51);
@@ -414,7 +414,7 @@ function App() {
             sound(52);
             soundListAdd(52);
             await wait(1000);
-            imgRef.current['center'].src="/texture/bg.png";
+            imgRef.current['center'].src = "/texture/bg.png";
         }
         function soundListAdd(x) {
             if (soundList.length >= 32) return;
@@ -440,21 +440,26 @@ function App() {
             row++;
             if (Math.floor(x / 10) === 3 || Math.floor(x / 10) === 4 || Math.floor(x / 10) === 5) {
                 grid2[row][column] = 17;
-                key = `2-${row}-${column}`;
-                if (imgRef.current[key]) {
-                    imgRef.current[key].src = textures[grid2[row][column]];
-                }
+            } else {
+                grid2[row][column] = 0;
             }
+            key = `2-${row}-${column}`;
+            if (imgRef.current[key]) {
+                imgRef.current[key].src = textures[grid2[row][column]];
+            }
+
             row++;
             if (Math.floor(x / 10) === 5) {
                 grid2[row][column] = 18;
-                key = `2-${row}-${column}`;
-                if (imgRef.current[key]) {
-                    imgRef.current[key].src = textures[grid2[row][column]];
-                }
+            } else {
+                grid2[row][column] = 0;
+            }
+            key = `2-${row}-${column}`;
+            if (imgRef.current[key]) {
+                imgRef.current[key].src = textures[grid2[row][column]];
             }
             if (soundList.length === 32) {
-                imgRef.current['center'].src="/texture/youwin.png";
+                imgRef.current['center'].src = "/texture/youwin.png";
                 gameover();
             }
         }
