@@ -13,6 +13,7 @@ function Home() {
         <Button text="game" to="/game" styleType="default" />
         <Link to="/st">Soundtest</Link>
         <p>Score: {data.scoreVal}</p> 
+        <p>soundList: {data.soundList}</p> 
       </nav>
     </div>
   );
