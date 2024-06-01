@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './../stylesheet/style.css'; // 必要に応じてCSSを適用するためにインポート
+import './../stylesheet/game.css'; // 必要に応じてCSSを適用するためにインポート
 import { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import Header from '../components/header.jsx';
 
 let inited = 0;
-
+let pen = 0;
+let guin = 0;
 // 各セルに適用するテクスチャを定義
 let grid = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -24,6 +25,17 @@ let grid = [
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+];
+
+let grid2 = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1]
 ];
 
 function MyLink({ to, onClick, children }) {
@@ -46,22 +58,16 @@ function MyLink({ to, onClick, children }) {
 function App() {
 
     const navigate = useNavigate();
-    const [gameLog, setGameLog] = useState("ここにログが表示されますのじゃ🦊");
     var soundList = [];
 
     // ==========================================
     // !!!!!!!ゲーム外やり取り関係関数予定地!!!!!!!!
     // ==========================================
 
-    // ログの表示
-    function addGameLog(message) {
-        setGameLog(prevLog => prevLog + '\n' + message);
-    }
 
     // 音を鳴らす
     function sound(id) {
-        addGameLog("[" + id + "の音を鳴らす]");
-        const audio = new Audio(process.env.PUBLIC_URL + '/sound/'+id+'.wav');
+        const audio = new Audio(process.env.PUBLIC_URL + '/sound/' + id + '.wav');
         audio.play();
     }
 
@@ -69,13 +75,12 @@ function App() {
     const [scoreVal, setScore] = useState(0);
 
     function score(id, combo) {
-        addGameLog(id + "を消しました；" + combo + "コンボ．");
         setScore(prevLog => prevLog + (2 ** (combo - 1)));
     }
 
     function gameover() {
-        addGameLog("がめおべら");
-        addGameLog("スペースキーでresultへ");
+        
+        inited = 100;
         const waitForSpace = () => {
             return new Promise(resolve => {
                 const handleKeyDown = (event) => {
@@ -91,7 +96,7 @@ function App() {
         waitForSpace().then(() => {
 
             const path = '/result';
-            const data = {scoreVal, soundList};
+            const data = { scoreVal, soundList };
 
             // パスとデータを共有して画面遷移
             navigate(path, { state: data });
@@ -102,6 +107,8 @@ function App() {
     // !!!!ゲーム外やり取り関係関数予定地おわり!!!!!
     // ==========================================
 
+
+
     const imgRef = useRef({});
     imgRef.current = {};
     useLayoutEffect(() => {
@@ -110,11 +117,11 @@ function App() {
             100: '/texture/bg.png',
             1: '/texture/ice.png',
             10: '/texture/penguin.png',
-            11: '/texture/iceAm.png',
-            12: '/texture/iceC.png',
-            13: '/texture/iceEm.png',
-            14: '/texture/iceF.png',
-            15: '/texture/iceG.png',
+            11: '/texture/iceC.png',
+            12: '/texture/iceG.png',
+            13: '/texture/iceAm.png',
+            14: '/texture/iceEm.png',
+            15: '/texture/iceF.png',
             16: '/texture/pen.png',
             17: '/texture/guin.png',
             18: '/texture/ppap.png',
@@ -136,9 +143,6 @@ function App() {
         const columns = 16;
         let combo = 0;
 
-        let pen = 0;
-        let guin = 0;
-
         // ====関数定義====
 
         function getRandomIntInRange(min, max) {
@@ -150,8 +154,10 @@ function App() {
             return new Promise(resolve => {
                 if (inited === 0) {
                     window.location.reload();
+                } else if (inited === 100) {
+
                 } else {
-                    setTimeout(resolve, ms-10)
+                    setTimeout(resolve, ms - 10)
                 }
             });
         }
@@ -294,6 +300,7 @@ function App() {
 
         async function check() {
             if (grid[1][8] !== 0) {
+                imgRef.current['center'].src="/texture/gameover.png";
                 gameover();
                 return;
             }
@@ -347,7 +354,7 @@ function App() {
                             } else {
                                 if (tmp !== 16 && tmp !== 17) {
                                     sound(tmp2);
-                                    soundList.push(tmp2);
+                                    soundListAdd(tmp2);
                                 }
                             }
                             score(tmp2, combo);
@@ -374,38 +381,82 @@ function App() {
         }
 
         async function ppapFunc() {
+            imgRef.current['center'].src="/texture/ppap2.png";
             updateCellColor(14, 1, 0);
             sound(51);
-            soundList.push(51);
+            soundListAdd(51);
             await wait(1000);
             updateCellColor(14, 2, 0);
             sound(52);
-            soundList.push(52);
+            soundListAdd(52);
             await wait(1000);
             updateCellColor(14, 3, 0);
             sound(53);
-            soundList.push(53);
+            soundListAdd(53);
             await wait(1000);
             updateCellColor(14, 4, 0);
             sound(54);
-            soundList.push(54);
+            soundListAdd(54);
             await wait(1000);
             updateCellColor(14, 5, 0);
             sound(55);
-            soundList.push(55);
+            soundListAdd(55);
             await wait(1000);
             updateCellColor(14, 6, 0);
             sound(51);
-            soundList.push(51);
+            soundListAdd(51);
             await wait(1000);
             updateCellColor(14, 7, 0);
             sound(55);
-            soundList.push(55);
+            soundListAdd(55);
             await wait(1000);
             updateCellColor(14, 8, 0);
             sound(52);
-            soundList.push(52);
+            soundListAdd(52);
             await wait(1000);
+            imgRef.current['center'].src="/texture/bg.png";
+        }
+        function soundListAdd(x) {
+            if (soundList.length >= 32) return;
+            soundList.push(x);
+            var row = 4 * (Math.floor((soundList.length - 1) / 16) + 1) - 4;
+            var column = (soundList.length - 1) % 16;
+            console.log(column);
+            grid2[row][column] = x % 10 + 10;
+            var key = `2-${row}-${column}`;
+            if (imgRef.current[key]) {
+                imgRef.current[key].src = textures[grid2[row][column]];
+            }
+
+
+            row++;
+            if (Math.floor(x / 10) === 2 || Math.floor(x / 10) === 4 || Math.floor(x / 10) === 5) {
+                grid2[row][column] = 16;
+                key = `2-${row}-${column}`;
+                if (imgRef.current[key]) {
+                    imgRef.current[key].src = textures[grid2[row][column]];
+                }
+            }
+            row++;
+            if (Math.floor(x / 10) === 3 || Math.floor(x / 10) === 4 || Math.floor(x / 10) === 5) {
+                grid2[row][column] = 17;
+                key = `2-${row}-${column}`;
+                if (imgRef.current[key]) {
+                    imgRef.current[key].src = textures[grid2[row][column]];
+                }
+            }
+            row++;
+            if (Math.floor(x / 10) === 5) {
+                grid2[row][column] = 18;
+                key = `2-${row}-${column}`;
+                if (imgRef.current[key]) {
+                    imgRef.current[key].src = textures[grid2[row][column]];
+                }
+            }
+            if (soundList.length === 32) {
+                imgRef.current['center'].src="/texture/youwin.png";
+                gameover();
+            }
         }
         // ====ゲーム開始====
 
@@ -449,17 +500,36 @@ function App() {
                         ))}
                     </tbody>
                 </table>
-                <div>
-                    <h1>Game</h1>
-                    <nav>
-                        <MyLink to="/">Home</MyLink>
-                    </nav>
+                <div className='right'>
+                    <h2>履歴</h2>
+                    <table className="grid2">
+                        <tbody>
+                            {grid2.map((row, i) => (
+                                <tr key={i} className="row">
+                                    {row.map((cell, j) => (
+                                        <td key={j} className="cell">
+                                            {/* key属性を使って再描画をトリガー */}
+                                            <img ref={el => imgRef.current[`2-${i}-${j}`] = el} key={`2-${i}-${j}`}
+                                                src='/texture/ice.png'
+                                                alt={``}
+                                                className="pixelated"
+                                            />
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <h2>Pen: {pen === 1 ? 'Yes' : 'No'}</h2>
+                    <h2>Guin: {guin === 1 ? 'Yes' : 'No'}</h2>
                     <h2>Score: {scoreVal}</h2>
-
-                    <h2>ログ</h2>
-                    <textarea style={{ whiteSpace: 'pre-line' }} value={gameLog} readOnly rows="30" cols="100"></textarea>
                 </div>
             </div>
+            <img ref={el => imgRef.current[`center`] = el}
+                src='/texture/bg.png'
+                alt={``}
+                className="center"
+            />
         </div>
     );
 }
