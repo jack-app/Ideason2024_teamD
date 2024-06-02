@@ -31,9 +31,10 @@ function Home() {
     <div>
       <Header />
       <nav>
-        <Button text="game" to="/game" styleType="default" />
-        <Link to="/st">Soundtest</Link>
+        
+        <div className='scorebox'>
         <p>Score: {data.scoreVal}</p>
+        </div>
         <p>soundList: {data.soundList}</p>
         <button onClick={() => playSounds()}>生成結果</button>
       </nav>
