@@ -22,10 +22,14 @@ function Home() {
         </div>
          
         <div className='penguin'>
-          <img src="/image/pengin.png" alt="Penguin" />
+          <img src="/texture/penguin.png" alt="Penguin"   width={200
+
+          }/>
         </div>
         <div className='onnpu'>
-          <img src="/image/onnpu.png" alt="Music Note" />
+          <img src="/texture/note.png" alt="Music Note" width={200
+            
+          } />
         </div>
         
       <p className='title'>Penguin and </p>
