@@ -67,7 +67,8 @@ function App() {
 
     // 音を鳴らす
     function sound(id) {
-        const audio = new Audio(process.env.PUBLIC_URL + '/sound/' + id + '.wav');
+        const audio = new Audio();
+        audio.src = process.env.PUBLIC_URL + '/sound/' + id + '.wav';
         audio.play();
     }
 
