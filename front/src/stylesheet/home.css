@@ -19,20 +19,24 @@ body {
 .penguin {
   margin: 0%;
   padding: 0%;
-  width: 50%; /* 幅を200ピクセルに設定 */
+  width: 200px; /* 幅を200ピクセルに設定 */
   height: auto; /* 高さを自動調整してアスペクト比を維持 */
+  image-rendering: pixelated;
+  object-fit: cover;
   position: absolute;
-  top: 20;
-  right: 5%;
+  top: 60%;
+  left: 50%;
 }
 .onnpu {
   margin: 0%;
   padding: 0%;
-  width: 15%; /* 幅を200ピクセルに設定 */
+  width: 200px; /* 幅を200ピクセルに設定 */
   height: auto; /* 高さを自動調整してアスペクト比を維持 */
+  image-rendering: pixelated;
+  object-fit: cover;
   position: absolute;
-  top: 20%;
-  right: 5%;
+  top: 25%;
+  left: 50%;
 }
 
 .box {
