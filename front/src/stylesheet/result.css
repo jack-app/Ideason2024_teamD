@@ -14,12 +14,14 @@ body {
 }
 .scorebox {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 15%;
+    left: 40%;
     margin: 1em 0;
     padding: 1em;
     background-color: #4d8ff2;
     border: solid 3px #263238;
+    border-radius: 5px;
+    font-size: 50px;
   }
   
 

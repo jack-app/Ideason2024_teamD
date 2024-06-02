@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Header from '../components/header.jsx';
 import Button from '../components/button.jsx';
-
+import './../stylesheet/result.css';
 
 // n ms待つ
 function wait(ms) {
@@ -34,9 +34,10 @@ function Home() {
         
         <div className='scorebox'>
         <p>Score: {data.scoreVal}</p>
-        </div>
+        
         <p>soundList: {data.soundList}</p>
         <button onClick={() => playSounds()}>生成結果</button>
+        </div>
       </nav>
     </div>
   );
