@@ -8,13 +8,14 @@ function Home() {
     <div>
       <Header />
       <nav>
-      <Button text="Game" to="/game" styleType="default" />
-      <Button text="SoundTest" to="/st" styleType="default" />
-      <Button text="Rules" to="/rules" styleType="default" />
+      <Button text="プレイ" to="/game" styleType="default" />
+      <Button text="音量" to="/st" styleType="default" />
+      <Button text="ルール" to="/rules" styleType="default" />
       </nav>
     </div>
   );
 }
+
 
 export default Home;
 
