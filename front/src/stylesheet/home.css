@@ -2,3 +2,10 @@
  font-size: 40px;
  color: black;
 }
+/* Background.css */
+.background {
+  background-image: url('/public/texture/ice.png'); /* 画像のパスを指定 */
+  background-repeat: repeat; /* 水平方向と垂直方向に繰り返す */
+  min-height: 100vh; /* 最小の高さをビューポートの100%に設定 */
+  width: 100%; /* 幅を100%に設定 */
+}
