@@ -12,7 +12,7 @@ function Home() {
       <Button text="Game" to="/game" styleType="default" />
       <Button text="SoundTest" to="/st" styleType="default" />
       <Button text="Rules" to="/rules" styleType="default" />
-      <p className='title'>Penguin and </p>
+      <p className='title'>Penguin's Puzzle and Audio Production</p>
       </nav>
     </div>
   );
