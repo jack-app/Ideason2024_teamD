@@ -22,12 +22,11 @@ function Home() {
         </div>
          
         <div className='penguin'>
-          <img src="../../public/image/penguin.png"></img>
+          <img src="/image/pengin.png" alt="Penguin" />
         </div>
         <div className='onnpu'>
-          <img src="../../public/image/onnou.png"></img>
+          <img src="/image/onnpu.png" alt="Music Note" />
         </div>
-          
         
       <p className='title'>Penguin and </p>
      </nav>
@@ -35,6 +34,4 @@ function Home() {
   );
 }
 
-
 export default Home;
-
