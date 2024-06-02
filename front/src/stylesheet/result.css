@@ -13,5 +13,13 @@ body {
   background-color: rgba(255, 255, 255, 0.5); /* Fallback background color */
 }
 .scorebox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: 1em 0;
+    padding: 1em;
+    background-color: #4d8ff2;
+    border: solid 3px #263238;
+  }
   
-}
+
