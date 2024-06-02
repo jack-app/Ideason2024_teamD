@@ -9,8 +9,7 @@ const Header = () => {
       
       <nav>
         <ul>
-          <li><Link to="/">ゲーム説明</Link></li>
-          <li><Link to="/about">ホーム画面に戻る</Link></li>
+          <li><Link to="/">ホーム画面に戻る</Link></li>
           
         </ul>
       </nav>
