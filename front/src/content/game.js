@@ -67,7 +67,6 @@ function App() {
 
     // 音を鳴らす
     function sound(id) {
-        addGameLog("[" + id + "の音を鳴らす]");
         const audio = new Audio();
         audio.src = process.env.PUBLIC_URL + '/sound/' + id + '.wav';
         audio.play();
