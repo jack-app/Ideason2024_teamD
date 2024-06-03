@@ -8,10 +8,6 @@ function Home() {
   return (
     <div>
       <Header />
-      <nav>
-        <Button text="game" to="/game" styleType="default" />
-        <Link to="/st">Soundtest</Link>
-      </nav>
       <div className='box'>
        <h1 className='text'>ルール説明</h1>
       </div>
