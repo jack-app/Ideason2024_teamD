@@ -1,16 +1,18 @@
 /* Button.css */
 .btn {
     padding: 10px 20px;
-    font-size: 16px;
+    font-size: 30px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+   
+    
   }
   
   .btn.default {
-    background-color: #74a1d2;
-    color: #fff;
+    background-color: #FBA454;
+    color: #060606;
   }
   
   .btn.default:hover {

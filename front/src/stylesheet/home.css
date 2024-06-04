@@ -1,0 +1,55 @@
+.title {
+ font-size: 40px;
+ color: black;
+}
+/* Background.css */
+.background {
+  background-image: url('../../public/texture/ice.png'); /* 画像のパスを指定 */
+  background-repeat: repeat; /* 水平方向と垂直方向に繰り返す */
+  min-height: 100vh; /* 最小の高さをビューポートの100%に設定 */
+  width: 100%; /* 幅を100%に設定 */
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('../../public/texture/ice.png') ;
+  /* The background image should be semi-transparent */
+  background-color: rgba(255, 255, 255, 0.5); /* Fallback background color */
+}
+.penguin {
+  margin: 0%;
+  padding: 0%;
+  width: 200px; /* 幅を200ピクセルに設定 */
+  height: auto; /* 高さを自動調整してアスペクト比を維持 */
+  image-rendering: pixelated;
+  object-fit: cover;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+}
+.onnpu {
+  margin: 0%;
+  padding: 0%;
+  width: 200px; /* 幅を200ピクセルに設定 */
+  height: auto; /* 高さを自動調整してアスペクト比を維持 */
+  image-rendering: pixelated;
+  object-fit: cover;
+  position: absolute;
+  top: 25%;
+  left: 50%;
+}
+
+.box {
+  position:absolute;
+  top: 35%;
+  left: 25%;
+}
+.one {
+  padding: 30px;
+}
+.two {
+  padding: 30px;
+}
+.three {
+  padding: 30px;
+}
