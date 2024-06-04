@@ -8,14 +8,16 @@
 body {
   margin: 0;
   padding: 0;
-  background-image: url('../../public/texture/ice.png') ;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('../../public/texture/ice.png'); 
   /* The background image should be semi-transparent */
+  background-repeat: repeat;
   background-color: rgba(255, 255, 255, 0.5); /* Fallback background color */
 }
 .scorebox {
     position: absolute;
-    top: 40%;
-    left: 20%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     margin: 1em 0;
     padding: 1em;
     background-color: #4d8ff2;
@@ -23,5 +25,5 @@ body {
     border-radius: 5px;
     font-size: 20px;
   }
-  
+
 
