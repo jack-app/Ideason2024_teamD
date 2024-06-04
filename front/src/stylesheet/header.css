@@ -1,0 +1,36 @@
+/* Header.css */
+.header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #FBA454;
+    color: #0a0a0a;
+    font-weight: 700;
+  }
+  
+  .logo a {
+    color: #010101;
+    text-decoration: none;
+    font-size: 24px;
+  }
+  
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+  }
+  
+  nav ul li {
+    display: inline;
+  }
+  
+  nav ul li a {
+    color: #0a0a0a;
+    text-decoration: none;
+  }
+  
+  nav ul li a:hover {
+    text-decoration: underline;
+  }
+  

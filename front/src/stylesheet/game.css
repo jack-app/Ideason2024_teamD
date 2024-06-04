@@ -32,3 +32,28 @@
   image-rendering: pixelated;
 
 }
+
+.grid2 {
+  background-image: url('/public/texture/bg2.png');
+  width: 90%;
+  border-collapse: collapse;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  image-rendering: pixelated;
+}
+
+.right {
+  width: 50%;
+  padding-left: 5%;
+}
+
+.center {
+  image-rendering: pixelated;
+  position: absolute;
+  top: 12%;
+  left: 0%;
+  width: 40%;
+}
+body {
+  zoom: 1.0;
+}
