@@ -9,7 +9,7 @@ const Header = () => {
       
       <nav>
         <ul>
-          <li><Link to="/">ゲーム説明</Link></li>
+          <li><Link to="/rules">ゲーム説明</Link></li>
           <li><Link to="/">ホーム画面に戻る</Link></li>
           
         </ul>
