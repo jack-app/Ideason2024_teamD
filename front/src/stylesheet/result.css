@@ -1,0 +1,29 @@
+/* Background.css */
+.background {
+  background-image: url('../../public/texture/ice.png'); /* 画像のパスを指定 */
+  background-repeat: repeat; /* 水平方向と垂直方向に繰り返す */
+  min-height: 100vh; /* 最小の高さをビューポートの100%に設定 */
+  width: 100%; /* 幅を100%に設定 */
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('../../public/texture/ice.png'); 
+  /* The background image should be semi-transparent */
+  background-repeat: repeat;
+  background-color: rgba(255, 255, 255, 0.5); /* Fallback background color */
+}
+.scorebox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 1em 0;
+    padding: 1em;
+    background-color: #4d8ff2;
+    border: solid 3px #263238;
+    border-radius: 5px;
+    font-size: 20px;
+  }
+
+
