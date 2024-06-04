@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Header from '../components/header.jsx';
 import Button from '../components/button.jsx';
 import './../stylesheet/home.css';
@@ -11,6 +10,7 @@ function Home() {
       <nav>
         <div className='box'>
          <div className='one'>
+      <p className='title'>Penguin's Puzzle and Audio Production</p>
       <Button text="Game" to="/game" styleType="default" />
          </div>  
          <div className='two'>
