@@ -31,8 +31,6 @@ function Home() {
             
           } />
         </div>
-        
-      <p className='title'>Penguin and </p>
      </nav>
     </div>
   );
