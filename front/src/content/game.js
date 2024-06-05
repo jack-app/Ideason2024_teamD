@@ -8,7 +8,7 @@ let inited = 0;
 let pen = 0;
 let guin = 0;
 // 各セルに適用するテクスチャを定義
-let grid = [
+const initgrid= [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -26,6 +26,8 @@ let grid = [
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
+
+let grid =  initgrid.map(row => row.slice());
 
 const endnum = 32; 
 let grid2 = [
@@ -55,8 +57,36 @@ function MyLink({ to, onClick, children }) {
     );
 }
 
+function arraysEqual(arr1, arr2) {
+    if (arr1.length !== arr2.length) {
+        return false;
+    }
+    for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i] !== arr2[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function arrays2DEqual(arr1, arr2) {
+    if (arr1.length !== arr2.length) {
+        return false;
+    }
+    for (let i = 0; i < arr1.length; i++) {
+        if (!arraysEqual(arr1[i], arr2[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
 
 function App() {
+
+    if((inited==0||inited===100)&&!arrays2DEqual(initgrid,grid)){
+        window.location.reload();
+    }
 
     const navigate = useNavigate();
     var soundList = [];
@@ -75,9 +105,10 @@ function App() {
 
     // 得点加算
     const [scoreVal, setScore] = useState(0);
-
+var scoreData=0;
     function score(id, combo) {
-        setScore(prevLog => prevLog + (2 ** (combo - 1)));
+        scoreData= scoreData + (2 ** (combo - 1));
+        setScore(scoreData);
     }
 
     function gameover() {
@@ -98,8 +129,7 @@ function App() {
         waitForSpace().then(() => {
 
             const path = '/result';
-            const data = { scoreVal, soundList };
-
+            const data = {scoreData, soundList };
             // パスとデータを共有して画面遷移
             navigate(path, { state: data });
         });
@@ -113,7 +143,10 @@ function App() {
 
     const imgRef = useRef({});
     imgRef.current = {};
+
     useLayoutEffect(() => {
+     
+        
         const textures = {
             0: '/texture/bg.png',
             100: '/texture/bg.png',
@@ -155,9 +188,9 @@ function App() {
         function wait(ms) {
             return new Promise(resolve => {
                 if (inited === 0) {
-                    window.location.reload();
+                  
                 } else if (inited === 100) {
-
+                    
                 } else {
                     setTimeout(resolve, ms - 10)
                 }
@@ -448,7 +481,6 @@ function App() {
             soundList.push(x);
             var row = 4 * (Math.floor((soundList.length - 1) / 16) + 1) - 4;
             var column = (soundList.length - 1) % 16;
-            console.log(column);
             grid2[row][column] = x % 10 + 10;
             var key = `2-${row}-${column}`;
             if (imgRef.current[key]) {
@@ -512,7 +544,7 @@ function App() {
             resetPenguin();
         }
 
-    }, []);
+        }, []);
     return (
         <div className="App">
             <Header />
