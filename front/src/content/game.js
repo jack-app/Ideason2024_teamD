@@ -188,7 +188,7 @@ function App() {
                 17,
                 18
             ]
-            return blocks[getRandomIntInRange(0, blocks.length)]
+            return blocks[getRandomIntInRange(0, blocks.length-1)]
         }
         async function resetPenguin() {
             playing = getRandomBlock();
