@@ -116,13 +116,20 @@ var scoreData=0;
         inited = 100;
         const waitForSpace = () => {
             return new Promise(resolve => {
-                const handleKeyDown = (event) => {
-                    if (event.code === 'Space') {
-                        window.removeEventListener('keydown', handleKeyDown);
+                const handleInteraction = (event) => {
+                    if (event.type === 'keydown' && event.code === 'Space') {
+                        window.removeEventListener('keydown', handleInteraction);
+                        window.removeEventListener('touchstart', handleInteraction);
+                        resolve();
+                    } else if (event.type === 'touchstart') {
+                        window.removeEventListener('keydown', handleInteraction);
+                        window.removeEventListener('touchstart', handleInteraction);
                         resolve();
                     }
                 };
-                window.addEventListener('keydown', handleKeyDown);
+                
+                window.addEventListener('keydown', handleInteraction);
+                window.addEventListener('touchstart', handleInteraction);
             });
         };
 
@@ -143,40 +150,127 @@ var scoreData=0;
 
     const imgRef = useRef({});
     imgRef.current = {};
+    // ====初期化処理====
 
-    useLayoutEffect(() => {
-     
-        
-        const textures = {
-            0: '/texture/bg.png',
-            100: '/texture/bg.png',
-            1: '/texture/ice.png',
-            10: '/texture/penguin.png',
-            11: '/texture/iceC.png',
-            12: '/texture/iceG.png',
-            13: '/texture/iceAm.png',
-            14: '/texture/iceEm.png',
-            15: '/texture/iceF.png',
-            16: '/texture/pen.png',
-            17: '/texture/guin.png',
-            18: '/texture/ppap.png',
+    const startX = 8;
+    const startY = 2;
+    let playX = startX;
+    let playY = startY;
+    let play2X = startX;
+    let play2Y = startY + 1;
+    let playing = 11; // 操作中のブロックの色
+    let playing2 = 11; // 操作中のブロック2の色
+    const rows = 16;
+    const columns = 16;
+    let combo = 0;
+    let state = "start";
 
-        };
+    // セルの色を更新する関数
+    function updateCellColor(row, column, st) {
+        grid[row][column] = st;
+        const key = `${row}-${column}`;
+        if (imgRef.current[key]) {
+            imgRef.current[key].src = textures[grid[row][column]];
+        }
+    }
 
 
-        // ====初期化処理====
+    async function check() {
+        if (grid[2][8] !== 0) {
+            imgRef.current['center'].src = "/texture/gameover.png";
+            gameover();
+            return;
+        }
+        var flag = 0;
 
-        const startX = 8;
-        const startY = 2;
-        let playX = startX;
-        let playY = startY;
-        let play2X = startX;
-        let play2Y = startY + 1;
-        let playing = 11; // 操作中のブロックの色
-        let playing2 = 11; // 操作中のブロック2の色
-        const rows = 16;
-        const columns = 16;
-        let combo = 0;
+        // 落下確認
+        for (let i = 0; i < rows - 1; i++) {
+            for (let j = 1; j < columns - 1; j++) {
+                if (grid[i][j] !== 0 && grid[i + 1][j] === 0) {
+                    flag = 1;
+                    updateCellColor(i + 1, j, grid[i][j]);
+                    updateCellColor(i, j, 0);
+                }
+            }
+        }
+        if (flag === 1) {
+            check();
+        } else {
+            flag = 0;
+            for (let i = 0; i < rows - 1; i++) {
+                for (let j = 1; j < columns - 1; j++) {
+                    // 2つ繋がった確認
+                    if (grid[i][j] !== 0 && grid[i][j] !== 1 && grid[i][j] !== 100 && grid[i][j] === grid[i][j + 1]) {
+                        var tmp = grid[i][j];
+
+                        combo++;
+                        if (tmp === 16) {
+                            sound(100);
+                            if (pen === 0) pen = 1; else pen = 0;
+                        }
+                        if (tmp === 17) {
+                            sound(100);
+                            if (guin === 0) guin = 1; else guin = 0;
+                        }
+                        let tmp2 = tmp;
+                        if (pen === 1) {
+                            if (guin === 1) {
+                                tmp2 += 30;
+                            } else {
+                                tmp2 += 10;
+                            }
+                        } else if (guin === 1) {
+                            tmp2 += 20;
+
+                        }
+
+                        if (tmp === 18) {
+                            ppapFunc();
+                            await wait(8000);
+                            sound(100);
+                        } else {
+                            if (tmp !== 16 && tmp !== 17) {
+                                sound(tmp2);
+                                soundListAdd(tmp2);
+                            }
+                        }
+                        score(tmp2, combo);
+
+
+                        for (let k = 0; k < 5; k++) {
+                            await wait(100);
+                            updateCellColor(i, j, 0);
+                            updateCellColor(i, j + 1, 0);
+                            await wait(100);
+                            updateCellColor(i, j, tmp);
+                            updateCellColor(i, j + 1, tmp);
+                        }
+                        updateCellColor(i, j, 0);
+                        updateCellColor(i, j + 1, 0);
+
+                        check();
+                        return;
+                    }
+                }
+            }
+            resetPenguin();
+        }
+    }
+    const textures = {
+        0: '/texture/bg.png',
+        100: '/texture/bg.png',
+        1: '/texture/ice.png',
+        10: '/texture/penguin.png',
+        11: '/texture/iceC.png',
+        12: '/texture/iceG.png',
+        13: '/texture/iceAm.png',
+        14: '/texture/iceEm.png',
+        15: '/texture/iceF.png',
+        16: '/texture/pen.png',
+        17: '/texture/guin.png',
+        18: '/texture/ppap.png',
+
+    };
 
         // ====関数定義====
 
@@ -292,154 +386,9 @@ var scoreData=0;
             }
         }
 
-        // キーボード入力を処理する関数
-        function handleKeyPress(event) {
+       
 
-            if (state === "block") {
-                // 押されたキーのキーコードを取得
-                const keyCode = event.keyCode;
-
-                updateCellColor(playY, playX, 0);
-                updateCellColor(play2Y, play2X, 0);
-
-                // キーコードに応じて処理を行う
-                switch (keyCode) {
-
-                    case 37: // 左矢印キー
-                        if (playX > 0 && grid[playY][playX - 1] === 0 && play2X > 0 && grid[play2Y][play2X - 1] === 0) {
-                            playX--;
-                            play2X--;
-                        }
-                        break;
-                    /*case 38: // 上矢印キー
-                        if (playY > 0 && grid[playY - 1][playX] === 0)
-                            playY--;
-                        break;
-                    */
-                    case 39: // 右矢印キー
-                        if (playX < columns - 1 && grid[playY][playX + 1] === 0 && play2X < columns - 1 && grid[play2Y][play2X + 1] === 0) {
-                            playX++;
-                            play2X++;
-                        }
-                        break;
-                    case 40: // 下矢印キー
-                        if (playY < columns - 1 && grid[playY + 1][playX] === 0 && play2Y < columns - 1 && grid[play2Y + 1][play2X] === 0) {
-                            playY++;
-                            play2Y++;
-                        }
-                        else {
-                            state = "check";
-                        }
-                        break;
-                    default:
-                        // 他のキーが押された場合は何もしない
-                        break;
-                }
-                updateCellColor(playY, playX, playing);
-                updateCellColor(play2Y, play2X, playing2);
-
-
-                if (state === "check") {
-                    combo = 0;
-                    check();
-                }
-            }
-        }
-        // キーボード入力イベントをリッスンする
-        document.addEventListener('keydown', handleKeyPress);
-
-        // セルの色を更新する関数
-        function updateCellColor(row, column, st) {
-            grid[row][column] = st;
-            const key = `${row}-${column}`;
-            if (imgRef.current[key]) {
-                imgRef.current[key].src = textures[grid[row][column]];
-            }
-        }
-
-
-        async function check() {
-            if (grid[1][8] !== 0) {
-                imgRef.current['center'].src = "/texture/gameover.png";
-                gameover();
-                return;
-            }
-            var flag = 0;
-
-            // 落下確認
-            for (let i = 0; i < rows - 1; i++) {
-                for (let j = 1; j < columns - 1; j++) {
-                    if (grid[i][j] !== 0 && grid[i + 1][j] === 0) {
-                        flag = 1;
-                        updateCellColor(i + 1, j, grid[i][j]);
-                        updateCellColor(i, j, 0);
-                    }
-                }
-            }
-            if (flag === 1) {
-                check();
-            } else {
-                flag = 0;
-                for (let i = 0; i < rows - 1; i++) {
-                    for (let j = 1; j < columns - 1; j++) {
-                        // 2つ繋がった確認
-                        if (grid[i][j] !== 0 && grid[i][j] !== 1 && grid[i][j] !== 100 && grid[i][j] === grid[i][j + 1]) {
-                            var tmp = grid[i][j];
-
-                            combo++;
-                            if (tmp === 16) {
-                                sound(100);
-                                if (pen === 0) pen = 1; else pen = 0;
-                            }
-                            if (tmp === 17) {
-                                sound(100);
-                                if (guin === 0) guin = 1; else guin = 0;
-                            }
-                            let tmp2 = tmp;
-                            if (pen === 1) {
-                                if (guin === 1) {
-                                    tmp2 += 30;
-                                } else {
-                                    tmp2 += 10;
-                                }
-                            } else if (guin === 1) {
-                                tmp2 += 20;
-
-                            }
-
-                            if (tmp === 18) {
-                                ppapFunc();
-                                await wait(8000);
-                                sound(100);
-                            } else {
-                                if (tmp !== 16 && tmp !== 17) {
-                                    sound(tmp2);
-                                    soundListAdd(tmp2);
-                                }
-                            }
-                            score(tmp2, combo);
-
-
-                            for (let k = 0; k < 5; k++) {
-                                await wait(100);
-                                updateCellColor(i, j, 0);
-                                updateCellColor(i, j + 1, 0);
-                                await wait(100);
-                                updateCellColor(i, j, tmp);
-                                updateCellColor(i, j + 1, tmp);
-                            }
-                            updateCellColor(i, j, 0);
-                            updateCellColor(i, j + 1, 0);
-
-                            check();
-                            return;
-                        }
-                    }
-                }
-                resetPenguin();
-            }
-        }
-
+        
         async function ppapFunc() {
             imgRef.current['center'].src = "/texture/ppap2.png";
             updateCellColor(14, 1, 0);
@@ -527,7 +476,8 @@ var scoreData=0;
         }
         // ====ゲーム開始====
 
-        let state = "start";
+        useLayoutEffect(() => {
+     
         if (inited === 0) {
             inited = 1;
             init();
@@ -544,11 +494,127 @@ var scoreData=0;
             resetPenguin();
         }
 
+
         }, []);
+
+ // キーボード入力を処理する関数
+ function handleKeyPress(event) {
+
+    if (state === "block") {
+        // 押されたキーのキーコードを取得
+        const keyCode = event.keyCode;
+
+        updateCellColor(playY, playX, 0);
+        updateCellColor(play2Y, play2X, 0);
+
+        // キーコードに応じて処理を行う
+        switch (keyCode) {
+
+            case 37: // 左矢印キー
+                if (playX > 0 && grid[playY][playX - 1] === 0 && play2X > 0 && grid[play2Y][play2X - 1] === 0) {
+                    playX--;
+                    play2X--;
+                }
+                break;
+            /*case 38: // 上矢印キー
+                if (playY > 0 && grid[playY - 1][playX] === 0)
+                    playY--;
+                break;
+            */
+            case 39: // 右矢印キー
+                if (playX < columns - 1 && grid[playY][playX + 1] === 0 && play2X < columns - 1 && grid[play2Y][play2X + 1] === 0) {
+                    playX++;
+                    play2X++;
+                }
+                break;
+            case 40: // 下矢印キー
+                if (playY < columns - 1 && grid[playY + 1][playX] === 0 && play2Y < columns - 1 && grid[play2Y + 1][play2X] === 0) {
+                    playY++;
+                    play2Y++;
+                }
+                else {
+                    state = "check";
+                }
+                break;
+            default:
+                // 他のキーが押された場合は何もしない
+                break;
+        }
+        updateCellColor(playY, playX, playing);
+        updateCellColor(play2Y, play2X, playing2);
+
+
+        if (state === "check") {
+            combo = 0;
+            check();
+        }
+    }
+}
+// キーボード入力イベントをリッスンする
+document.addEventListener('keydown', handleKeyPress);
+
+        // スマホ対応
+        let SstartX;
+    let SstartY;
+    let SendX;
+    let SendY;
+
+    const handleTouchStart = (event) => {
+        const touch = event.touches[0];
+        SstartX = touch.clientX;
+        SstartY = touch.clientY;
+    };
+
+    const handleTouchMove = (event) => {
+        const touch = event.touches[0];
+        SendX = touch.clientX;
+        SendY = touch.clientY;
+    };
+
+    const handleTouchEnd = () => {
+        const deltaX = SendX - SstartX;
+        const deltaY = SendY - SstartY;
+
+        let simulatedKeyEvent = { keyCode: null };
+
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            // 左右のスワイプ
+            if (deltaX > 0) {
+                // 右スワイプ
+                simulatedKeyEvent.keyCode = 39;
+            } else {
+                // 左スワイプ
+                simulatedKeyEvent.keyCode = 37;
+            }
+        } else {
+            // 上下のスワイプ
+            if (deltaY > 0) {
+                // 下スワイプ
+                simulatedKeyEvent.keyCode = 40;
+            }
+            // 上スワイプを追加する場合は、ここに処理を追加
+        }
+
+        handleKeyPress(simulatedKeyEvent);
+    };
+
+    useEffect(() => {
+        window.addEventListener('touchstart', handleTouchStart);
+        window.addEventListener('touchmove', handleTouchMove);
+        window.addEventListener('touchend', handleTouchEnd);
+
+        return () => {
+            window.removeEventListener('touchstart', handleTouchStart);
+            window.removeEventListener('touchmove', handleTouchMove);
+            window.removeEventListener('touchend', handleTouchEnd);
+        };
+    }, []);
+
     return (
         <div className="App">
             <Header />
             <div className="container">
+            <div className='left'>
                 <table className="grid">
                     <tbody>
                         {grid.map((row, i) => (
@@ -567,7 +633,9 @@ var scoreData=0;
                         ))}
                     </tbody>
                 </table>
+                </div>
                 <div className='right'>
+                    <div>
                     <h2>履歴</h2>
                     <table className="grid2">
                         <tbody>
@@ -587,6 +655,7 @@ var scoreData=0;
                             ))}
                         </tbody>
                     </table>
+                    </div>
                     <h2>Pen: {pen === 1 ? 'Yes' : 'No'}</h2>
                     <h2>Guin: {guin === 1 ? 'Yes' : 'No'}</h2>
                     <h2>Score: {scoreVal}</h2>
