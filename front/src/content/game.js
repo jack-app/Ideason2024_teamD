@@ -27,6 +27,7 @@ let grid = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
+const endnum = 32; 
 let grid2 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -173,7 +174,7 @@ function App() {
                 11,
                 15,
                 12,
-
+/*
                 11,
                 12,
                 13,
@@ -182,12 +183,12 @@ function App() {
                 11,
                 15,
                 12,
-
+*/
                 16,
                 17,
                 18
             ]
-            return blocks[getRandomIntInRange(0, 18)]
+            return blocks[getRandomIntInRange(0, blocks.length)]
         }
         async function resetPenguin() {
             playing = getRandomBlock();
@@ -443,7 +444,7 @@ function App() {
             imgRef.current['center'].src = "/texture/bg.png";
         }
         function soundListAdd(x) {
-            if (soundList.length >= 32) return;
+            if (soundList.length >= endnum) return;
             soundList.push(x);
             var row = 4 * (Math.floor((soundList.length - 1) / 16) + 1) - 4;
             var column = (soundList.length - 1) % 16;
