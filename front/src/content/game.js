@@ -29,16 +29,16 @@ const initgrid = [
 
 let grid = initgrid.map(row => row.slice());
 
-const endnum = 32;
+const endnum = 16;
 let grid2 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1]/*,
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1]
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1]*/
 ];
 
 function MyLink({ to, onClick, children }) {
@@ -84,7 +84,7 @@ function arrays2DEqual(arr1, arr2) {
 
 function App() {
 
-    if ((inited == 0 || inited === 100) && !arrays2DEqual(initgrid, grid)) {
+    if ((inited == 0 || inited === 1000) && !arrays2DEqual(initgrid, grid)) {
         window.location.reload();
     }
 
@@ -113,8 +113,7 @@ function App() {
 
     function gameover() {
 
-        inited = 100;
-        const waitForSpace = () => {
+        inited = 100; const waitForSpace = () => {
             return new Promise(resolve => {
                 const handleInteraction = (event) => {
                     if (event.type === 'keydown' && event.code === 'Space') {
@@ -133,13 +132,16 @@ function App() {
             });
         };
 
+        inited = 100;
         waitForSpace().then(() => {
 
             const path = '/result';
             const data = { scoreData, soundList };
             // パスとデータを共有して画面遷移
             navigate(path, { state: data });
+            inited = 1000;
         });
+
     }
 
     // ==========================================
@@ -224,6 +226,7 @@ function App() {
 
                         }
 
+                        score(tmp2, combo);
                         if (tmp === 18) {
                             ppapFunc();
                             await wait(8000);
@@ -234,7 +237,6 @@ function App() {
                                 soundListAdd(tmp2);
                             }
                         }
-                        score(tmp2, combo);
 
 
                         for (let k = 0; k < 5; k++) {
@@ -469,9 +471,10 @@ function App() {
         if (imgRef.current[key]) {
             imgRef.current[key].src = textures[grid2[row][column]];
         }
-        if (soundList.length === 32) {
+        if (soundList.length === endnum) {
             imgRef.current['center'].src = "/texture/youwin.png";
             gameover();
+            return;
         }
     }
     // ====ゲーム開始====
