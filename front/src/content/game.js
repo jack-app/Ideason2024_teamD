@@ -390,7 +390,7 @@ function App() {
 
 
     async function ppapFunc() {
-        imgRef.current['center'].src = "/texture/ppap2.png";
+        imgRef.current['center'].src = "/texture/PPAP2.png";
         updateCellColor(14, 1, 0);
         sound(51);
         soundListAdd(51);
