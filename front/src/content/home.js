@@ -27,7 +27,7 @@ function Home() {
           }/>
         </div>
         <div className='onnpu'>
-          <img src="/texture/note.png" alt="Music Note" width={200
+          <img src="/texture/note.png" alt="Music Note" width={100
             
           } />
         </div>

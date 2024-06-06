@@ -87,13 +87,13 @@ body {
   image-rendering: pixelated;
   object-fit: cover;
   position: absolute;
-  top: 25%;
-  left: 50%;
+  top: 35%;
+  left: 60%;
 }
 
 .box {
   position:absolute;
-  top: 35%;
+  top: 10%;
   left: 25%;
 }
 .one {
