@@ -97,8 +97,10 @@ function App() {
 
 
     // 音を鳴らす
+
+    const audio = new Audio();
     function sound(id) {
-        const audio = new Audio();
+        
         audio.src = process.env.PUBLIC_URL + '/sound/' + id + '.wav';
         audio.play();
     }
@@ -111,26 +113,29 @@ function App() {
         setScore(scoreData);
     }
 
+    const waitForSpace = () => {
+        return new Promise(resolve => {
+            const handleInteraction = (event) => {
+                if(pp===1){
+                    resolve();
+                }
+                if (event.type === 'keydown' && event.code === 'Space') {
+                    window.removeEventListener('keydown', handleInteraction);
+                    window.removeEventListener('touchstart', handleInteraction);
+                    resolve();
+                } else if (event.type === 'touchstart') {
+                    window.removeEventListener('keydown', handleInteraction);
+                    window.removeEventListener('touchstart', handleInteraction);
+                    resolve();
+                }
+            };
+
+            window.addEventListener('keydown', handleInteraction);
+            window.addEventListener('touchstart', handleInteraction);
+        });
+    };
+    
     function gameover() {
-
-        inited = 100; const waitForSpace = () => {
-            return new Promise(resolve => {
-                const handleInteraction = (event) => {
-                    if (event.type === 'keydown' && event.code === 'Space') {
-                        window.removeEventListener('keydown', handleInteraction);
-                        window.removeEventListener('touchstart', handleInteraction);
-                        resolve();
-                    } else if (event.type === 'touchstart') {
-                        window.removeEventListener('keydown', handleInteraction);
-                        window.removeEventListener('touchstart', handleInteraction);
-                        resolve();
-                    }
-                };
-
-                window.addEventListener('keydown', handleInteraction);
-                window.addEventListener('touchstart', handleInteraction);
-            });
-        };
 
         inited = 100;
         waitForSpace().then(() => {
@@ -484,8 +489,21 @@ function App() {
         if (inited === 0) {
             inited = 1;
             init();
+            pp=1;
         }
         function init() {
+            imgRef.current['center'].src = "/texture/start.png";            
+        }
+       
+
+    }, []);
+
+    let pp = 0;
+    function playerPermission(){
+        audio.src = process.env.PUBLIC_URL + '/sound/100.wav';
+        audio.play();
+        if(pp===1){
+            imgRef.current['center'].src = "/texture/bg.png";
             for (let i = 0; i < rows; i++) {
                 for (let j = 0; j < columns; j++) {
                     const key = `${i}-${j}`;
@@ -495,11 +513,22 @@ function App() {
                 }
             }
             resetPenguin();
+
+            pp = 0;
         }
+            }
 
-
-    }, []);
-
+            useEffect(() => {
+                const preventDefault = (e) => e.preventDefault();
+                
+                // touchmoveイベントのデフォルト動作を防止
+                document.addEventListener('touchmove', preventDefault, { passive: false });
+            
+                return () => {
+                  // クリーンアップ：アンマウント時にリスナーを削除
+                  document.removeEventListener('touchmove', preventDefault);
+                };
+              }, []);
     // キーボード入力を処理する関数
     function handleKeyPress(event) {
 
@@ -667,6 +696,7 @@ function App() {
                 </div>
             </div>
             <img ref={el => imgRef.current[`center`] = el}
+            onClick={playerPermission}
                 src='/texture/bg.png'
                 alt={``}
                 className="center"
