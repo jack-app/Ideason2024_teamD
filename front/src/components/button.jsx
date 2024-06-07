@@ -9,7 +9,7 @@ const Button = ({ text, onClick, disabled, styleType, to }) => {
 
   const handleClick = (e) => {
     if (onClick) onClick(e);
-    if (to) navigate(to);
+    if (to) window.location.assign(to)/*navigate(to)*/;
   };
 
   return (
