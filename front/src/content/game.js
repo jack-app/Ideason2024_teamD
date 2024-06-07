@@ -500,9 +500,10 @@ function App() {
 
     let pp = 0;
     function playerPermission(){
-        audio.src = process.env.PUBLIC_URL + '/sound/100.wav';
-        audio.play();
+
         if(pp===1){
+            audio.src = process.env.PUBLIC_URL + '/sound/100.wav';
+            audio.play();
             imgRef.current['center'].src = "/texture/bg.png";
             for (let i = 0; i < rows; i++) {
                 for (let j = 0; j < columns; j++) {
