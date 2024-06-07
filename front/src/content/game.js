@@ -99,10 +99,16 @@ function App() {
     // 音を鳴らす
 
     const audio = new Audio();
+    const audio2 = new Audio();
+    var audtest=0;
     function sound(id) {
-        
+        audtest++;
+        if(audtest%2===0){
         audio.src = process.env.PUBLIC_URL + '/sound/' + id + '.wav';
-        audio.play();
+        audio.play();}else{
+            audio2.src = process.env.PUBLIC_URL + '/sound/' + id + '.wav';
+            audio2.play();
+        }
     }
 
     // 得点加算
@@ -502,8 +508,9 @@ function App() {
     function playerPermission(){
 
         if(pp===1){
-            audio.src = process.env.PUBLIC_URL + '/sound/100.wav';
+            //audio.src = process.env.PUBLIC_URL + '/sound/100.wav';
             audio.play();
+            audio2.play();
             imgRef.current['center'].src = "/texture/bg.png";
             for (let i = 0; i < rows; i++) {
                 for (let j = 0; j < columns; j++) {
