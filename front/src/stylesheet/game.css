@@ -1,10 +1,55 @@
 .container {
   display: flex;
 }
+.left {
+  width: 40%;
+}
+.right {
+  width: 50%;
+  padding-left: 5%;
+}
 
+.center {
+  image-rendering: pixelated;
+  position: absolute;
+  top: 12%;
+  left: 0%;
+  width: 40%;
+}
+
+.grid2 {
+  background-image: url('/public/texture/bg2.png');
+  width: 90%;
+  border-collapse: collapse;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  image-rendering: pixelated;
+}
+
+/* スマホ用のスタイル */
+@media (max-width: 767px) {
+  .container {
+    flex-direction: column;
+  }
+  .left {
+    width: 100%; 
+  }
+  .right {
+    width: 100%;
+    display: flex;
+   }
+
+.center {
+  image-rendering: pixelated;
+  position: absolute;
+  top: 10%;
+  left: 0%;
+  width: 100%;
+}
+}
 .grid {
   background-image: url('/public/texture/bg2.png');
-  width: 40%;
+  width: 100%;
   border-collapse: collapse;
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -33,27 +78,10 @@
 
 }
 
-.grid2 {
-  background-image: url('/public/texture/bg2.png');
-  width: 90%;
-  border-collapse: collapse;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  image-rendering: pixelated;
-}
 
-.right {
-  width: 50%;
-  padding-left: 5%;
-}
 
-.center {
-  image-rendering: pixelated;
-  position: absolute;
-  top: 12%;
-  left: 0%;
-  width: 40%;
-}
+
+
 body {
   zoom: 1.0;
 }
