@@ -130,8 +130,6 @@ console.log(len);
         {/*<Button text="Game" to="/game" styleType="default" />*/}
         <div className='scorebox'>
           <p>Score: {data.scoreData}</p>
-
-          <p>soundList: {data.soundList}</p>
           <button onClick={() => playSounds()}>生成結果</button>
         </div>
       </nav>

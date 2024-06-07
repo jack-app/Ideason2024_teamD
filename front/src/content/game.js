@@ -538,6 +538,8 @@ function App() {
                   document.removeEventListener('touchmove', preventDefault);
                 };
               }, []);
+
+              
     // キーボード入力を処理する関数
     function handleKeyPress(event) {
 
