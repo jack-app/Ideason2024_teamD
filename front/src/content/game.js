@@ -508,7 +508,8 @@ function App() {
     function playerPermission(){
 
         if(pp===1){
-            //audio.src = process.env.PUBLIC_URL + '/sound/100.wav';
+            audio.src = process.env.PUBLIC_URL + '/sound/100.wav';
+            audio2.src = process.env.PUBLIC_URL + '/sound/100.wav';
             audio.play();
             audio2.play();
             imgRef.current['center'].src = "/texture/bg.png";
