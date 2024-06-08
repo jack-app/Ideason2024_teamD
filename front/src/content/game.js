@@ -653,6 +653,24 @@ function App() {
         };
     }, []);
 
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+          // 十字キーのキーコード
+          const arrowKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+          if (arrowKeys.includes(event.key)) {
+            event.preventDefault();
+          }
+        };
+    
+        window.addEventListener('keydown', handleKeyDown);
+    
+        // クリーンアップ関数
+        return () => {
+          window.removeEventListener('keydown', handleKeyDown);
+        };
+      }, []);
+    
+
     return (
         <div className="App">
             <Header />
